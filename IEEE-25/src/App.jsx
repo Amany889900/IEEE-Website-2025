@@ -8,7 +8,7 @@ function App() {
   
   return (
     <>
-    <div className="relative min-h-screen bg-gradient-to-br from-[#003f6b] via-[#0F4C81] to-[#1f5f92] text-white overflow-hidden">
+    <div className="relative min-h-screen bg-[#2A588C] text-white overflow-hidden">
     <Navbar></Navbar>
 <Home/>
 </div>
