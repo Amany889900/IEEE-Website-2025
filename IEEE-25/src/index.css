@@ -5,4 +5,9 @@
 
 :root {
   --color-light-blue: #B8C8D9;
+   --spin-slow: 'spin 20s linear infinite',
+}
+
+.my-spin-slow {
+  animation: var(--spin-slow);
 }
