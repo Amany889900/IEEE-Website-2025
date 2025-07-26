@@ -2,7 +2,7 @@ import React from 'react'
 import Logo from "../assets/images/Logo-3-IEEE[1].jpg"
 function Navbar() {
   return (
-<nav class=" border-gray-200 dark:bg-gray-900">
+<nav class="">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="https://www.linkedin.com/company/ieee-asusb/posts/?feedView=all" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src={Logo} className="rounded-full w-[25%] h-[35%]" alt="IEEE Logo"  />
