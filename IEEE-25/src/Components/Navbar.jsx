@@ -1,10 +1,8 @@
 import React from 'react'
-import Logo from "../../assets/images/Logo-3-IEEE.jpeg"
+import Logo from "../assets/images/Logo-3-IEEE[1].jpg"
 function Navbar() {
   return (
-    
-
-<nav class=" bg-[#B8C8D9] border-gray-200 dark:bg-gray-900">
+<nav class=" border-gray-200 dark:bg-gray-900">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src={Logo} className="h-8 rounded-full w-[20%] h-[20%]" alt="IEEE Logo"  />
