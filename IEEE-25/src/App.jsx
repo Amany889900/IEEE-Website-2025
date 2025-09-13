@@ -4,6 +4,9 @@ import { Button} from "flowbite-react";
 import Home from './Pages/Home/Home';
 import Navbar from './Components/Navbar';
 import About from './Pages/About/About';
+import Workshops from './Pages/Workshops/Workshops';
+import ContactUs from './Pages/ContactUS/ContactUs';
+import Footer from './Components/Footer';
 
 function App() {
   
@@ -11,8 +14,11 @@ function App() {
     <>
     <div className="bg-[#00396B]">
       <Navbar></Navbar>
-      <Home/>
-      <About/>
+      <section id="home" name="home"><Home /></section>
+      <section id="about" name="about"><About /></section>
+      <section id="workshops" name="workshops"><Workshops /></section>
+      <section id="contact" name="contact"><ContactUs /></section>
+      <Footer/>
     </div>
     
     </>

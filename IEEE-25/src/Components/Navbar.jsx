@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Logo from "../assets/images/Logo.png"
+import { Link } from "react-scroll";
 function Navbar() {
 const [isOpen, setIsOpen] = useState(false);
 
@@ -50,12 +51,36 @@ const [isOpen, setIsOpen] = useState(false);
           className={`${isOpen ? "block" : "hidden"} w-full lg:block lg:w-auto`}
         >
           <ul className="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
-            <li><a href="#" className="block py-2 px-3 text-white">Home</a></li>
-            <li><a href="#" className="block py-2 px-3 text-white">About</a></li>
-            <li><a href="#" className="block py-2 px-3 text-white">Workshops</a></li>
-            <li><a href="#" className="block py-2 px-3 text-white">Tech talks</a></li>
-            <li><a href="#" className="block py-2 px-3 text-white">Our team</a></li>
-            <li><a href="#" className="block py-2 px-3 text-white">Contact us</a></li>
+            <li>
+    <Link to="home" smooth={true} duration={500} className="block py-2 px-3 text-white cursor-pointer">
+      Home
+    </Link>
+  </li>
+  <li>
+    <Link to="about" smooth={true} duration={500}  offset={-100}  className="block py-2 px-3 text-white cursor-pointer">
+      About
+    </Link>
+  </li>
+  <li>
+    <Link to="workshops" smooth={true} duration={500}  offset={-150}  className="block py-2 px-3 text-white cursor-pointer">
+      Workshops
+    </Link>
+  </li>
+  <li>
+    <Link to="events" smooth={true} duration={500}  offset={-100}  className="block py-2 px-3 text-white cursor-pointer">
+      Events
+    </Link>
+  </li>
+  <li>
+    <Link to="team" smooth={true} duration={500}  offset={-100}  className="block py-2 px-3 text-white cursor-pointer">
+      Our team
+    </Link>
+  </li>
+  <li>
+    <Link to="contact" smooth={true} duration={500} offset={-100} className="block py-2 px-3 text-white cursor-pointer">
+      Contact us
+    </Link>
+  </li>
           </ul>
         </div>
       </div>

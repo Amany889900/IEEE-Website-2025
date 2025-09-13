@@ -1,0 +1,17 @@
+
+:global(.swiper-pagination-bullet) {
+  background: gray;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  margin-left: 20px;
+  
+}
+
+
+:global(.swiper-pagination-bullet-active) {
+  background: white;
+  opacity: 1;
+}
