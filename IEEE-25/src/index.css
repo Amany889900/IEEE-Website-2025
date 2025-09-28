@@ -11,3 +11,18 @@
 .my-spin-slow {
   animation: var(--spin-slow);
 }
+
+.garamond{
+    font-family: "EB Garamond", serif;
+}
+
+@layer components{
+ .container{
+  @apply mx-auto;
+ }
+}
+@layer base {
+  h3 {
+    @apply text-5xl font-bold text-gray-800;
+  }
+}

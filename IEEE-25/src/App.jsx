@@ -7,6 +7,7 @@ import About from './Pages/About/About';
 import Workshops from './Pages/Workshops/Workshops';
 import ContactUs from './Pages/ContactUS/ContactUs';
 import Footer from './Components/Footer';
+import EventTimeline from './Pages/Events/EventTimeline';
 
 function App() {
   
@@ -17,6 +18,7 @@ function App() {
       <section id="home" name="home"><Home /></section>
       <section id="about" name="about"><About /></section>
       <section id="workshops" name="workshops"><Workshops /></section>
+      <section id="events" name="events"><EventTimeline /></section>
       <section id="contact" name="contact"><ContactUs /></section>
       <Footer/>
     </div>
