@@ -160,9 +160,9 @@ const EventTimeline = () => {
 
   return (
     <div ref={containerRef} className="mt-30 p-8 container">
-      <h2 className="text-4xl font-bold text-center text-white mb-12 garamond">
-        See the events that electrified our members
-      </h2>
+     <h2 className="text-5xl md:text-6xl font-extrabold text-center text-white mb-16 tracking-wide drop-shadow-lg">
+  See the events that <span className="text-[#FFC425]">electrified</span> our members
+    </h2>
       
       {/* 2023 Section */}
       <div className="flex flex-col md:flex-row gap-4 mt-30 timeline-section">
