@@ -8,17 +8,19 @@ import Workshops from './Pages/Workshops/Workshops';
 import ContactUs from './Pages/ContactUS/ContactUs';
 import Footer from './Components/Footer';
 import EventTimeline from './Pages/Events/EventTimeline';
+import OurTeam from './Pages/OurTeam/OurTeam';
 
 function App() {
   
   return (
     <>
-    <div className="bg-[#00396B]">
+    <div className="bg-[#00396B] w-full">
       <Navbar></Navbar>
       <section id="home" name="home"><Home /></section>
       <section id="about" name="about"><About /></section>
       <section id="workshops" name="workshops"><Workshops /></section>
       <section id="events" name="events"><EventTimeline /></section>
+      <section id="team" name="team"><OurTeam /></section>
       <section id="contact" name="contact"><ContactUs /></section>
       <Footer/>
     </div>
