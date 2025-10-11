@@ -1,11 +1,26 @@
-import React, { useState } from 'react'
-import Logo from "../assets/images/Logo.png"
+import React, { useState, useEffect } from "react";
+import Logo from "../assets/images/Logo.png";
 import { Link } from "react-scroll";
+
 function Navbar() {
-const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Detect scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50); // changes color after scrolling 50px
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="border-b border-[#135491] sticky top-0">
+    <nav
+      className={`  capitalize garamond text-xl sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-[#002B55]/90 shadow-lg" : "bg-transparent"
+      }`}
+    >
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between w-[80%] mx-auto p-2">
         {/* Logo */}
         <a
@@ -26,7 +41,7 @@ const [isOpen, setIsOpen] = useState(false);
         <button
           onClick={() => setIsOpen(!isOpen)}
           type="button"
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg lg:hidden hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#135491]"
         >
           <span className="sr-only">Open main menu</span>
           <svg
@@ -50,42 +65,33 @@ const [isOpen, setIsOpen] = useState(false);
         <div
           className={`${isOpen ? "block" : "hidden"} w-full lg:block lg:w-auto`}
         >
-          <ul className="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
-            <li>
-    <Link to="home" smooth={true} duration={500} className="block py-2 px-3 text-white cursor-pointer">
-      Home
-    </Link>
-  </li>
-  <li>
-    <Link to="about" smooth={true} duration={500}  offset={-100}  className="block py-2 px-3 text-white cursor-pointer">
-      About
-    </Link>
-  </li>
-  <li>
-    <Link to="workshops" smooth={true} duration={500}  offset={-150}  className="block py-2 px-3 text-white cursor-pointer">
-      Workshops
-    </Link>
-  </li>
-  <li>
-    <Link to="events" smooth={true} duration={500}  offset={-100}  className="block py-2 px-3 text-white cursor-pointer">
-      Events
-    </Link>
-  </li>
-  <li>
-    <Link to="team" smooth={true} duration={500}  offset={-100}  className="block py-2 px-3 text-white cursor-pointer">
-      Our team
-    </Link>
-  </li>
-  <li>
-    <Link to="contact" smooth={true} duration={500} offset={-100} className="block py-2 px-3 text-white cursor-pointer">
-      Contact us
-    </Link>
-  </li>
+          <ul className="font-medium flex flex-col p-4 lg:p-0 mt-4 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0  bg-[#002B55]/95 lg:bg-transparent">
+            {[
+              { name: "Home", to: "home" },
+              { name: "About", to: "about", offset: -100 },
+              { name: "Workshops", to: "workshops", offset: -150 },
+              { name: "Events", to: "events", offset: -100 },
+              { name: "Our team", to: "team", offset: -100 },
+              { name: "Contact us", to: "contact", offset: -100 },
+            ].map((link, i) => (
+              <li key={i}>
+                <Link
+                  to={link.to}
+                  smooth={true}
+                  duration={500}
+                  offset={link.offset}
+                  onClick={() => setIsOpen(false)}
+                  className="block py-2 px-3 text-white cursor-pointer hover:text-[#FFC425] transition-colors"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

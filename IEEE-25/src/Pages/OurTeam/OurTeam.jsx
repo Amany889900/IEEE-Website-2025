@@ -1,6 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { UsersIcon } from '@heroicons/react/24/solid';
+import Youssef_kareem from "../../assets/images/team/Youssef Kareem.jpg"
+import Seif_Foaud from "../../assets/images/team/Seif Fouad.jpg"
+import Abdelrahman_Youssef  from "../../assets/images/team/Abdelrahman Youssef.jpg"
+import Salma_Diab from "../../assets/images/team/Salma Diab.jpg"
+
+
 
 // Common animation variants
 const containerVariants = {
@@ -31,12 +37,17 @@ const itemVariants = {
 
 // Placeholder data for team members
 const teamMembers = [
-  { id: 1, name: "Dr. Ahmed Hassan", role: "Chairperson", image: "https://via.placeholder.com/150" },
-  { id: 2, name: "Fatma Ali", role: "Vice-Chairperson", image: "https://via.placeholder.com/150" },
-  { id: 3, name: "Mohamed Zaki", role: "Treasurer", image: "https://via.placeholder.com/150" },
-  { id: 4, name: "Nouran Gamal", role: "Technical Lead", image: "https://via.placeholder.com/150" },
-  { id: 5, name: "Youssef Khaled", role: "HR Manager", image: "https://via.placeholder.com/150" },
-  { id: 6, name: "Layla Tarek", role: "Public Relations", image: "https://via.placeholder.com/150" },
+  { id: 1, name: "Karim", role: "Chairman", image: "https://via.placeholder.com/150" },
+  { id: 2, name: "Youssef Kareem", role: "Vice-Chairman", image: Youssef_kareem },
+  { id: 3, name: "Passant Amr", role: "Treasurer", image: "https://via.placeholder.com/150" },
+  { id: 4, name: "Seif Fouad", role: "Secretary", image: Seif_Foaud },
+  { id: 5, name: "Abdelrahman Youssef", role: "Public Relations Head", image: Abdelrahman_Youssef },
+  { id: 6, name: "Salma Diab", role: "Public Relations Vice Head", image: Salma_Diab },
+  { id: 7, name: "Karim", role: "Chairman", image: "https://via.placeholder.com/150" },
+  { id: 8, name: "Youssef Kareem", role: "Vice-Chairman", image: Youssef_kareem },
+  { id: 9, name: "Passant Amr", role: "Treasurer", image: "https://via.placeholder.com/150" },
+  { id: 10, name: "Seif Fouad", role: "Secretary", image: Seif_Foaud },
+  { id: 11, name: "Abdelrahman Youssef", role: "Public Relations Head", image: Abdelrahman_Youssef },
 ];
 
 const OurTeam = () => {
