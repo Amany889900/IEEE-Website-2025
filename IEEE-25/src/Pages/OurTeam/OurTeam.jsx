@@ -5,6 +5,11 @@ import Youssef_kareem from "../../assets/images/team/Youssef Kareem.jpg"
 import Seif_Foaud from "../../assets/images/team/Seif Fouad.jpg"
 import Abdelrahman_Youssef  from "../../assets/images/team/Abdelrahman Youssef.jpg"
 import Salma_Diab from "../../assets/images/team/Salma Diab.jpg"
+import Shehab_Mahmoud from "../../assets/images/team/Shehab Mahmoud.png"
+import Karim_Khaled from "../../assets/images/team/Karim Khaled.jpg"
+import Rewan_Mohamed from "../../assets/images/team/Rewan Mohamed.jpg"
+import Habiba_Mostafa from "../../assets/images/team/Habiba Mostafa.jpeg"
+import Amany_Ehab from "../../assets/images/team/Amany Ehab.jpg"
 
 
 
@@ -43,11 +48,11 @@ const teamMembers = [
   { id: 4, name: "Seif Fouad", role: "Secretary", image: Seif_Foaud },
   { id: 5, name: "Abdelrahman Youssef", role: "Public Relations Head", image: Abdelrahman_Youssef },
   { id: 6, name: "Salma Diab", role: "Public Relations Vice Head", image: Salma_Diab },
-  { id: 7, name: "Karim", role: "Chairman", image: "https://via.placeholder.com/150" },
-  { id: 8, name: "Youssef Kareem", role: "Vice-Chairman", image: Youssef_kareem },
-  { id: 9, name: "Passant Amr", role: "Treasurer", image: "https://via.placeholder.com/150" },
-  { id: 10, name: "Seif Fouad", role: "Secretary", image: Seif_Foaud },
-  { id: 11, name: "Abdelrahman Youssef", role: "Public Relations Head", image: Abdelrahman_Youssef },
+  { id: 7, name: "Shehab Mahmoud", role: "Media Head", image: Shehab_Mahmoud },
+  { id: 8, name: "Karim Khaled", role: "Marketing Head", image: Karim_Khaled },
+  { id: 9, name: "Rewan Mohamed", role: "Fundraising Head", image: Rewan_Mohamed },
+  { id: 10, name: "Habiba Mostafa", role: "IT Head", image: Habiba_Mostafa },
+  { id: 11, name: "Amany Ehab", role: "IT Vice Head", image: Amany_Ehab},
 ];
 
 const OurTeam = () => {
@@ -85,7 +90,7 @@ const OurTeam = () => {
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-40 h-40 rounded-full object-cover border-4 border-[#FFC425] shadow-lg"
+                className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
               />
             </div>
             <h3 className="text-2xl font-bold text-white mb-2 drop-shadow">
