@@ -1,15 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { UsersIcon } from '@heroicons/react/24/solid';
-import Youssef_kareem from "../../assets/images/team/Youssef Kareem.jpg"
-import Seif_Foaud from "../../assets/images/team/Seif Fouad.jpg"
-import Abdelrahman_Youssef  from "../../assets/images/team/Abdelrahman Youssef.JPG"
-import Salma_Diab from "../../assets/images/team/Salma Diab.jpg"
-import Shehab_Mahmoud from "../../assets/images/team/Shehab Mahmoud.png"
-import Karim_Khaled from "../../assets/images/team/Karim Khaled.jpg"
-import Rewan_Mohamed from "../../assets/images/team/Rewan Mohamed.jpg"
-import Habiba_Mostafa from "../../assets/images/team/Habiba Mostafa.jpeg"
-import Amany_Ehab from "../../assets/images/team/Amany Ehab.jpg"
+import Youssef_kareem from "../../assets/images/team/Youssef_Kareem.jpg"
+import Seif_Foaud from "../../assets/images/team/Seif_Fouad.jpg"
+import Abdelrahman_Youssef  from "../../assets/images/team/Abdelrahman_Youssef.JPG"
+import Salma_Diab from "../../assets/images/team/Salma_Diab.jpg"
+import Shehab_Mahmoud from "../../assets/images/team/Shehab_Mahmoud.png"
+import Karim_Khaled from "../../assets/images/team/Karim_Khaled.jpg"
+import Rewan_Mohamed from "../../assets/images/team/Rewan_Mohamed.jpg"
+import Habiba_Mostafa from "../../assets/images/team/Habiba_Mostafa.jpeg"
+import Amany_Ehab from "../../assets/images/team/Amany_Ehab.jpg"
 
 
 
