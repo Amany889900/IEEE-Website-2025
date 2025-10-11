@@ -73,7 +73,7 @@ const OurTeam = () => {
       </div>
 
       {/* Team Members Grid */}
-      <motion.div
+      {/* <motion.div
         className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
         initial="hidden"
         whileInView="visible"
@@ -101,7 +101,34 @@ const OurTeam = () => {
             </p>
           </motion.div>
         ))}
-      </motion.div>
+      </motion.div> */}
+      <motion.div
+  className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+  initial="hidden"
+  animate="visible"
+  variants={containerVariants}
+>
+  {teamMembers.map((member) => (
+    <motion.div
+      key={member.id}
+      className="p-6 bg-[#00396B] rounded-2xl shadow-2xl transform transition-transform duration-500 hover:scale-105 border-2 border-white text-center"
+      variants={itemVariants}
+    >
+      <div className="flex justify-center mb-6">
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
+        />
+      </div>
+      <h3 className="text-2xl font-bold text-white mb-2 drop-shadow">
+        {member.name}
+      </h3>
+      <p className="text-xl text-[#FFC425] font-semibold">{member.role}</p>
+    </motion.div>
+  ))}
+</motion.div>
+
     </div>
   );
 };
