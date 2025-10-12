@@ -15,3 +15,66 @@
   background: white;
   opacity: 1;
 }
+
+.desktopNav {
+  position: relative;
+  width: 100%;
+}
+
+.swiperContainer {
+  width: 100%;
+}
+
+.navButton {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2.75rem;
+  line-height: 1;
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.75;
+}
+
+.prevButton,
+.nextButton {
+  padding: 0;
+}
+
+.prevButton {
+  left: -88px;
+}
+
+.nextButton {
+  right: -88px;
+}
+
+.navButton:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.navButton:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+  opacity: 1;
+}
+
+.prevButton span,
+.nextButton span {
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .navButton {
+    display: flex;
+  }
+}
