@@ -10,6 +10,8 @@ import Karim_Khaled from "../../assets/images/team/Karim_Khaled.jpg"
 import Rewan_Mohamed from "../../assets/images/team/Rewan_Mohamed.jpg"
 import Habiba_Mostafa from "../../assets/images/team/Habiba_Mostafa.jpeg"
 import Amany_Ehab from "../../assets/images/team/Amany_Ehab.jpg"
+import Kareem_Amr from "../../assets/images/team/Kareem_Amr.jpg"
+import Passant_Amr from "../../assets/images/team/Passant_Amr.jpg"
 
 
 
@@ -42,9 +44,9 @@ const itemVariants = {
 
 // Placeholder data for team members
 const teamMembers = [
-  { id: 1, name: "Karim", role: "Chairman", image: "https://via.placeholder.com/150" },
+  { id: 1, name: "Kareem Amr", role: "Chairman", image: Kareem_Amr },
   { id: 2, name: "Youssef Kareem", role: "Vice-Chairman", image: Youssef_kareem },
-  { id: 3, name: "Passant Amr", role: "Treasurer", image: "https://via.placeholder.com/150" },
+  { id: 3, name: "Passant Amr", role: "Treasurer", image: Passant_Amr },
   { id: 4, name: "Seif Fouad", role: "Secretary", image: Seif_Foaud },
   { id: 5, name: "Abdelrahman Youssef", role: "Public Relations Head", image: Abdelrahman_Youssef },
   { id: 6, name: "Salma Diab", role: "Public Relations Vice Head", image: Salma_Diab },

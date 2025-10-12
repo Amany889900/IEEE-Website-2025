@@ -5,6 +5,8 @@ import { Link } from "react-scroll";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const currentUrl = window.location.pathname.split("/");
+  // console.log(currentUrl);
 
   // Detect scroll
   useEffect(() => {
@@ -19,7 +21,9 @@ function Navbar() {
     <nav
       className={`  capitalize garamond text-xl sticky top-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-[#002B55]/90 shadow-lg" : "bg-transparent"
-      }`}
+      }
+      ${currentUrl[1] == "details"?"hidden":"visible"}
+      `}
     >
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between w-[80%] mx-auto p-2">
         {/* Logo */}
