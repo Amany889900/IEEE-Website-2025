@@ -17,7 +17,7 @@ export const workshopsList =
  // CORRECT signature: Uses 'workshop' object and accesses its properties.
   workshopsData.map((workshop) => (
   <Card 
-    key={workshop.id} // Always use a key for array mapping
+    key={workshop.id}
     name={workshop.name} 
     img={workshop.Cardimg} 
     id={workshop.id}

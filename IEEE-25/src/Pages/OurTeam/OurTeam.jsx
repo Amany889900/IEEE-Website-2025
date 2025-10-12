@@ -15,7 +15,7 @@ import Passant_Amr from "../../assets/images/team/Passant_Amr.jpg"
 
 
 
-// Common animation variants
+
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
@@ -42,7 +42,7 @@ const itemVariants = {
   },
 };
 
-// Placeholder data for team members
+
 const teamMembers = [
   { id: 1, name: "Kareem Amr", role: "Chairman", image: Kareem_Amr },
   { id: 2, name: "Youssef Kareem", role: "Vice-Chairman", image: Youssef_kareem },

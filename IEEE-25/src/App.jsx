@@ -8,9 +8,9 @@ import EventTimeline from "./Pages/Events/EventTimeline";
 import OurTeam from "./Pages/OurTeam/OurTeam";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import Footer from "./Components/Footer";
-import Details from "./Pages/Details/Details"; // ✅ Import your new component
+import Details from "./Pages/Details/Details"; 
 
-// ✅ Main layout with all sections (your original one-page design)
+
 function MainLayout() {
   return (
     <div className="bg-[#00396B] w-full">
@@ -38,7 +38,7 @@ function MainLayout() {
   );
 }
 
-// ✅ Separate page for Analog Workshop Details
+
 function DetailsLayout({ children }) {
   return (
     <div className="bg-[#00396B] w-full min-h-screen">
@@ -52,7 +52,7 @@ function DetailsLayout({ children }) {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />, // the main single-page layout
+    element: <MainLayout />, 
   },
   {
     path: "/details/:id",

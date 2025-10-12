@@ -73,7 +73,7 @@ const Details = () => {
   const handleRegisterClick = (e) => {
     e.preventDefault();
     console.log(`Navigating to Registration Form for ${workshop?.name}...`);
-    // NOTE: Replace this console.log with actual navigation or modal open logic.
+
   };
 
   if (!workshop) {
