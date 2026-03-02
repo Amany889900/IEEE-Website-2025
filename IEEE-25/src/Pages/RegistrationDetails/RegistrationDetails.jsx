@@ -1,5 +1,6 @@
 import React from 'react';
 import { Palette, Users, Globe, Settings, Code, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const teams = [
   {
@@ -40,6 +41,12 @@ const teams = [
 ];
 
 function RegistrationDetails() {
+     const navigate = useNavigate();
+  const goToRegisterationPage = () =>{
+ 
+     navigate("/join-us/register"); 
+  }
+
   return (
     <div className="min-h-screen  text-white py-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -75,7 +82,7 @@ function RegistrationDetails() {
                 ))}
               </div>
 
-              <button className="flex items-center gap-2 text-cyan-400 font-semibold hover:gap-4 transition-all uppercase text-sm">
+              <button onClick={goToRegisterationPage} className="flex items-center gap-2 text-cyan-400 font-semibold hover:gap-4 transition-all uppercase text-sm">
                 Apply Now <ArrowRight size={16} />
               </button>
             </div>

@@ -10,7 +10,7 @@ function Home() {
 
   const navigate = useNavigate();
 
-  const goToRegisterationPage = () => {
+  const goToRegisterationDetailsPage = () => {
     navigate("/join-us"); 
   };
   return (
@@ -39,7 +39,7 @@ function Home() {
       </div>
       {/* Registration Button */}
       <div className="w-full flex justify-center items-center">
-        <button onClick={goToRegisterationPage} className="px-8 py-3 text-lg font-bold text-white uppercase transition-all duration-300 border-2 border-white rounded-full hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+        <button onClick={goToRegisterationDetailsPage} className="px-8 py-3 text-lg font-bold text-white uppercase transition-all duration-300 border-2 border-white rounded-full hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.8)]">
           Be a Team Member
         </button>
       </div>
