@@ -2,16 +2,21 @@ import { useState } from "react";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    phone: "",
+    whatsappNumber: "",
     nationalId: "",
     university: "",
-    workshops: [],
     faculty: "",
-    department:"",
-    facultyID: "",
-    technicalBackground: "",
+    department: "",
+    facultyId: "",
+    linkedInUrl: "",
+    level: "",
+    firstPreference: "",
+    secondPreference: "",
+    interestReason: "",
+    hoursPerWeek: "",
+    willingToPayMembership: "",
     cv: null,
   });
 
@@ -19,551 +24,271 @@ const Registration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
+  const committees = ['Media and Marketing', 'IT', 'PR', 'Logistics', 'HR', 'FR'];
+  const levels = ['Freshmen', 'Sophomore', 'Junior 1 or 2', 'Senior'];
+  const hourOptions = ['Less than 4', '4-6', '6-10', 'More than 10'];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
+    setFormData((prev) => {
+      const newData = { ...prev, [name]: value };
+      // Mutual exclusion: if same as first, clear second
+      if (name === "firstPreference" && value === prev.secondPreference) {
+        newData.secondPreference = "";
+      }
+      return newData;
+    });
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleCvChange = (e) => {
     const file = e.target.files?.[0] || null;
-
-    setFormData((prev) => ({
-      ...prev,
-      cv: file,
-    }));
-
-    // Clear or set error based on file validity
-    if (!file) {
-      setErrors((prev) => ({
-        ...prev,
-        cv: "",
-      }));
-      return;
+    setFormData((prev) => ({ ...prev, cv: file }));
+    if (file && file.type !== "application/pdf") {
+      setErrors((prev) => ({ ...prev, cv: "CV must be a PDF file" }));
+    } else {
+      setErrors((prev) => ({ ...prev, cv: "" }));
     }
-
-    if (file.type !== "application/pdf") {
-      setErrors((prev) => ({
-        ...prev,
-        cv: "CV must be a PDF file",
-      }));
-    } else if (errors.cv) {
-      setErrors((prev) => ({
-        ...prev,
-        cv: "",
-      }));
-    }
-  };
-
-  const toggleWorkshop = (workshopName) => {
-    setFormData((prev) => {
-      const alreadySelected = prev.workshops.includes(workshopName);
-      const updatedWorkshops = alreadySelected
-        ? prev.workshops.filter((w) => w !== workshopName)
-        : [...prev.workshops, workshopName];
-
-      return {
-        ...prev,
-        workshops: updatedWorkshops,
-      };
-    });
-
-    if (errors.workshops) {
-      setErrors((prev) => ({
-        ...prev,
-        workshops: "",
-      }));
-    }
-  };
-
-  const handleClearForm = () => {
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      nationalId: "",
-      university: "",
-      workshops: [],
-      faculty: "",
-      department:"",
-      facultyID: "",
-      technicalBackground: "",
-      cv: null,
-    });
-    setErrors({});
-    setSubmitStatus(null);
   };
 
   const validateForm = () => {
     const newErrors = {};
+    // Updated required fields list based on new state names
+    const requiredFields = [
+      "name", "email", "whatsappNumber", "nationalId", "university", 
+      "faculty", "department", "facultyId", "level", 
+      "firstPreference", "interestReason", "hoursPerWeek", "willingToPayMembership"
+    ];
 
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required";
-    }
+    requiredFields.forEach(field => {
+      if (!formData[field]) newErrors[field] = "Required";
+    });
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    } else if (!/^[0-9+\-\s()]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Invalid email";
     }
 
-    if (!formData.nationalId.trim()) {
-      newErrors.nationalId = "National ID is required";
-    }
-
-    if (!formData.university.trim()) {
-      newErrors.university = "University is required";
-    }
-
-    if (!formData.workshops || formData.workshops.length === 0) {
-      newErrors.workshops = "Please select at least one workshop";
-    }
-
-    if (!formData.faculty.trim()) {
-      newErrors.faculty = "faculty is required";
-    }
-     if (!formData.department.trim()) {
-      newErrors.department = "department is required";
-    }
-    if (!formData.facultyID.trim()) {
-      newErrors.facultyID = "faculty ID is required";
-    }
-    if (!formData.cv) {
-      newErrors.cv = "CV is required";
-    }
-
-    if (formData.cv && formData.cv.type !== "application/pdf") {
-      newErrors.cv = "CV must be a PDF file";
-    }
-
+    if (!formData.cv) newErrors.cv = "CV required";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
-    setSubmitStatus(null);
-
     try {
-      const formData2 = new FormData();
+      const data = new FormData();
+      // Dynamically append all text fields and the file
+      Object.keys(formData).forEach(key => {
+        if (key === 'cv') {
+          data.append("cv", formData.cv);
+        } else {
+          data.append(key, formData[key]);
+        }
+      });
+     
+      // --- CONSOLE LOG SECTION ---
+      console.log("--- Form Data Preview ---");
+      data.forEach((value, key) => {
+        if (key === 'cv') {
+          console.log(`${key}:`, value.name, `(${value.type})`);
+        } else {
+          console.log(`${key}:`, value);
+        }
+      });
+      console.log("-------------------------");
+      // ---------------------------
 
-      formData2.append("name", formData.fullName);
-      formData2.append("email", formData.email);
-      formData2.append("phone", formData.phone);
-      formData2.append("ID", formData.nationalId);
-      formData2.append("university", formData.university);
-      formData2.append('department',formData.department);
-      formData2.append("faculty", formData.faculty);
-      formData2.append("facultyID", formData.nationalId);
-      formData2.append(
-        "technicalBackground",
-        formData.technicalBackground || " ",
+      const response = await fetch(
+        "https://ieee-recruitment-backend-spring26.vercel.app/registration/register",
+        { method: "POST", body:data }
       );
-      formData2.append("workshop", formData.workshops.join(","));
 
-      formData2.append("file", formData.cv ? formData.cv.name : "");
-
-      try {
-        const response = await fetch(
-          "https://registration-form-backend-peach.vercel.app/registration/register",
-          {
-            method: "POST",
-            redirect: "follow",
-            body: formData2,
-          },
-        );
-
-        const data = await response.json();
-        console.log("Success:", data);
-
+      if (response.ok) {
         setSubmitStatus("success");
-        setFormData({
-          fullName: "",
-          email: "",
-          phone: "",
-          nationalId: "",
-          university: "",
-          workshops: [],
-          faculty: "",
-          facultyID: "",
-          technicalBackground: "",
-          cv: null,
-        });
-      } catch (error) {
-        console.error("Error:", error);
+        handleClearForm();
+      } else {
+        setSubmitStatus("error");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
-      // Clear status message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus(null);
-      }, 5000);
+      setTimeout(() => setSubmitStatus(null), 5000);
     }
   };
 
+  const handleClearForm = () => {
+    setFormData({
+      name: "", email: "", whatsappNumber: "", nationalId: "", university: "",
+      faculty: "", department: "", facultyId: "", linkedInUrl: "", level: "",
+      firstPreference: "", secondPreference: "", interestReason: "",
+      hoursPerWeek: "", willingToPayMembership: "", cv: null,
+    });
+    setErrors({});
+  };
+
   return (
-    <div className="min-h-screen bg-[#00396B] py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-[#00396B]">
+    <div className="min-h-screen  py-12 px-4 selection:bg-cyan-500/30">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#FFC425] mb-2">
-            IEEE Workshop Registration
+        <div className="text-center mb-12">
+          <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-white mb-3">
+            Team <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">Registration</span>
           </h1>
+          <p className="text-gray-400 uppercase text-sm tracking-[0.4em]">Ignite your potential</p>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-[#00396B] p-6 sm:p-8 md:p-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Full Name */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Full Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.fullName ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Name"
-              />
-              {errors.fullName && (
-                <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>
-              )}
+        <div className="bg-[#0a1d37]/60 backdrop-blur-2xl border border-white/10 p-10 rounded-3xl shadow-2xl">
+          <form onSubmit={handleSubmit} className="space-y-10">
+            
+            {/* Input Grid using new IDs */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                { id: "name", label: "Full Name", placeholder: "John Doe" },
+                { id: "whatsappNumber", label: "WhatsApp Number", placeholder: "01xxxxxxxxx" },
+                { id: "email", label: "Email", placeholder: "example@ieee.org" },
+                { id: "linkedInUrl", label: "LinkedIn URL", placeholder: "linkedin.com/in/...", required: false },
+                { id: "nationalId", label: "National ID", placeholder: "14-digit ID" },
+                { id: "facultyId", label: "Faculty ID", placeholder: "ID Number" },
+                { id: "university", label: "University", placeholder: "ASU" },
+                { id: "faculty", label: "Faculty", placeholder: "Engineering" },
+                { id: "department", label: "Department", placeholder: "e.g., Computer Systems" },
+              ].map((field) => (
+                <div key={field.id} className={field.id === "name" || field.id === "email" ? "md:col-span-2" : ""}>
+                  <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-3 ml-1">
+                    {field.label} {field.required !== false && <span className="text-pink-500 text-lg">*</span>}
+                  </label>
+                  <input
+                    type="text"
+                    name={field.id}
+                    value={formData[field.id]}
+                    onChange={handleChange}
+                    className={`w-full px-5 py-4 bg-[#051124] border rounded-xl text-lg text-white focus:ring-4 focus:ring-cyan-500/20 focus:border-cyan-400 transition-all outline-none ${
+                      errors[field.id] ? "border-pink-500/50" : "border-white/10"
+                    }`}
+                    placeholder={field.placeholder}
+                  />
+                </div>
+              ))}
             </div>
 
-            {/* Phone */}
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Phone Number (Whatsapp) <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.phone ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="01*********"
-              />
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Email Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="email@gmail.com"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-              )}
-            </div>
-
-            {/* National ID */}
-            <div>
-              <label
-                htmlFor="nationalId"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                National ID <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="nationalId"
-                name="nationalId"
-                value={formData.nationalId}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.nationalId ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="National ID"
-              />
-              {errors.nationalId && (
-                <p className="mt-1 text-sm text-red-500">{errors.nationalId}</p>
-              )}
-            </div>
-
-            {/* University */}
-            <div>
-              <label
-                htmlFor="university"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                University <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="university"
-                name="university"
-                value={formData.university}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.university ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="University"
-              />
-              {errors.university && (
-                <p className="mt-1 text-sm text-red-500">{errors.university}</p>
-              )}
-            </div>
-
-            {/* Faculty */}
-            <div>
-              <label
-                htmlFor="faculty"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Faculty <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="faculty"
-                name="faculty"
-                value={formData.faculty}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.faculty ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="e.g., Computer Science, Electrical Engineering"
-              />
-              {errors.faculty && (
-                <p className="mt-1 text-sm text-red-500">{errors.faculty}</p>
-              )}
-            </div>
-            {/* Department */}
-              <div>
-              <label
-                htmlFor="department"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Department <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="department"
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.faculty ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="e.g., Computer and Systems Department"
-              />
-              {errors.department && (
-                <p className="mt-1 text-sm text-red-500">{errors.department}</p>
-              )}
-            </div>
-            {/* FacultyID */}
-            <div>
-              <label
-                htmlFor="facultyID"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Faculty ID <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="facultyID"
-                name="facultyID"
-                value={formData.facultyID}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 bg-[#D9D9D9] border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                  errors.facultyID ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Your Faculty ID"
-              />
-              {errors.facultyID && (
-                <p className="mt-1 text-sm text-red-500">{errors.facultyID}</p>
-              )}
-            </div>
-
-            {/* Workshop - checkboxes */}
-            <div>
-              <label className="block text-2xl font-medium text-[#D9D9D9] mb-2">
-                Which workshop are you interested in{" "}
-                <span className="text-red-500">*</span>
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#00396B]">
-                {[
-                  "computer arithmetic",
-                  "system verilog verification",
-                  "digital design",
-                  "uvm",
-                  "oop",
-                  "analog ic fundamentals",
-                  "automation & control",
-                  "analog/mixed-signals",
-                  "knx",
-                ].map((workshopName) => (
-                  <label
-                    key={workshopName}
-                    className="inline-flex items-center space-x-2 text-[#D9D9D9]"
-                  >
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                      checked={formData.workshops.includes(workshopName)}
-                      onChange={() => toggleWorkshop(workshopName)}
-                    />
-                    <span className="text-sm">{workshopName}</span>
+            {/* Level Selection */}
+            <div className="py-6 border-t border-white/5">
+              <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-6">Level <span className="text-pink-500 text-lg">*</span></label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {levels.map((lvl) => (
+                  <label key={lvl} className={`text-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    formData.level === lvl ? "bg-cyan-500/10 border-cyan-500 text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.2)]" : "border-white/10 text-gray-500 hover:border-white/30"
+                  }`}>
+                    <input type="radio" name="level" value={lvl} checked={formData.level === lvl} onChange={handleChange} className="hidden" />
+                    <span className="text-sm font-black uppercase tracking-tight">{lvl}</span>
                   </label>
                 ))}
               </div>
-              {errors.workshops && (
-                <p className="mt-1 text-sm text-red-500">{errors.workshops}</p>
-              )}
             </div>
 
-            {/* CV (PDF only) */}
-            <div>
-              <label
-                htmlFor="cv"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                CV <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="file"
-                id="cv"
-                name="cv"
-                accept="application/pdf"
-                onChange={handleCvChange}
-                className="w-full text-sm text-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#D9D9D9] file:text-black"
-              />
-              {errors.cv && (
-                <p className="mt-1 text-sm text-red-500">{errors.cv}</p>
-              )}
-            </div>
-
-            {/* Technical Background */}
-            <div>
-              <label
-                htmlFor="technicalBackground"
-                className="block text-sm font-medium text-[#D9D9D9] mb-2"
-              >
-                Technical Background
-              </label>
-              <textarea
-                id="technicalBackground"
-                name="technicalBackground"
-                value={formData.technicalBackground}
-                onChange={handleChange}
-                rows="4"
-                className="w-full px-4 py-3 bg-[#D9D9D9] border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-                placeholder="Briefly describe your technical background..."
-              />
-            </div>
-
-            {/* Submit Status Messages */}
-            {submitStatus === "success" && (
-              <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
-                <p className="font-medium">
-                  ✓ Registration submitted successfully!
-                </p>
+            {/* Position Interest */}
+            <div className="bg-[#051124] p-8 rounded-2xl border border-white/10 shadow-inner">
+              <h3 className="text-lg font-bold text-white mb-6">Choose Which Position Interests you:</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-5">First Preference <span className="text-pink-500 text-lg">*</span></label>
+                  <div className="space-y-4">
+                    {committees.map((c) => (
+                      <label key={c} className="flex items-center space-x-4 text-base text-gray-300 cursor-pointer group">
+                        <input type="radio" name="firstPreference" value={c} checked={formData.firstPreference === c} onChange={handleChange} className="w-5 h-5 accent-cyan-400" />
+                        <span className="group-hover:text-white transition-colors">{c}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-bold text-gray-500 mb-5">Second Preference (Optional)</label>
+                  <div className="space-y-4">
+                    {committees.filter(c => c !== formData.firstPreference).map((c) => (
+                      <label key={c} className="flex items-center space-x-4 text-base text-gray-500 cursor-pointer group">
+                        <input type="radio" name="secondPreference" value={c} checked={formData.secondPreference === c} onChange={handleChange} className="w-5 h-5 accent-blue-500" />
+                        <span className="group-hover:text-gray-300 transition-colors">{c}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
 
-            {submitStatus === "error" && (
-              <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-                <p className="font-medium">
-                  ✗ Error submitting form. Please try again.
-                </p>
+            {/* interestReason */}
+            <div>
+              <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-3">Briefly explain why you are interested in this role? <span className="text-pink-500 text-lg">*</span></label>
+              <textarea 
+                name="interestReason" 
+                value={formData.interestReason} 
+                onChange={handleChange} 
+                rows="4" 
+                placeholder="Long answer text"
+                className="w-full px-5 py-4 bg-[#051124] border border-white/10 rounded-xl text-lg text-white focus:border-cyan-400 transition-all outline-none resize-none shadow-inner" 
+              />
+            </div>
+
+            {/* hoursPerWeek */}
+            <div>
+              <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-5">How many hours per week can you provide? <span className="text-pink-500 text-lg">*</span></label>
+              <div className="space-y-4">
+                {hourOptions.map((h) => (
+                  <label key={h} className="flex items-center space-x-4 text-base text-gray-300 cursor-pointer group">
+                    <input type="radio" name="hoursPerWeek" value={h} checked={formData.hoursPerWeek === h} onChange={handleChange} className="w-5 h-5 accent-cyan-400" />
+                    <span className="group-hover:text-white transition-colors">{h}</span>
+                  </label>
+                ))}
               </div>
-            )}
+            </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                type="button"
-                onClick={handleClearForm}
-                className="w-full sm:w-auto px-6 py-3 rounded-lg border border-gray-300 text-gray-800 bg-white hover:bg-gray-100 transition-colors"
+            {/* willingToPayMembership */}
+            <div className="p-6 bg-cyan-400/5 border border-cyan-400/20 rounded-2xl">
+              <label className="block text-sm font-bold text-white mb-3">
+                [If selected as Highboard]: Are you willing to claim an IEEE Membership Profile (cost 14$)? <span className="text-pink-500 text-lg">*</span>
+              </label>
+              <p className="text-xs text-gray-400 mb-6 leading-relaxed">
+                High board members are the management of the student branch, such as: Chairman, Vice Chairman, Secretary, Treasurer, or Committee Heads
+              </p>
+              <div className="flex space-x-8">
+                {["Yes", "No", "Maybe"].map((opt) => (
+                  <label key={opt} className="flex items-center space-x-3 text-base text-gray-300 cursor-pointer group">
+                    <input type="radio" name="willingToPayMembership" value={opt} checked={formData.willingToPayMembership === opt} onChange={handleChange} className="w-5 h-5 accent-cyan-400" />
+                    <span className="group-hover:text-white transition-colors">{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* CV Upload */}
+            <div className="group py-4">
+              <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-4">Upload CV (PDF) <span className="text-pink-500 text-lg">*</span></label>
+              <div className="relative p-6 border-2 border-dashed border-white/10 rounded-2xl hover:border-cyan-500/50 transition-all bg-[#051124]">
+                <input 
+                  type="file" 
+                  accept="application/pdf" 
+                  onChange={handleCvChange} 
+                  className="w-full text-sm text-gray-400 file:mr-6 file:py-3 file:px-8 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:bg-cyan-500 file:text-black hover:file:bg-cyan-400 transition-all cursor-pointer" 
+                />
+              </div>
+              {errors.cv && <p className="mt-3 text-xs text-pink-500 font-bold text-center uppercase tracking-widest">{errors.cv}</p>}
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-8 text-center">
+              {submitStatus === "success" && <p className="text-cyan-400 mb-4 font-bold">Registration successful! Redirecting...</p>}
+              {submitStatus === "error" && <p className="text-pink-500 mb-4 font-bold">Submission failed. Please check your connection.</p>}
+              
+              <button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className={`w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black text-xl uppercase tracking-[0.2em] py-5 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.4)] hover:shadow-[0_0_50px_rgba(34,211,238,0.6)] transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50`}
               >
-                Clear Form
-              </button>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full sm:w-auto flex-1 bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 ${
-                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {isSubmitting ? (
-                  <span className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Submitting...
-                  </span>
-                ) : (
-                  "Submit Registration"
-                )}
+                {isSubmitting ? "Processing..." : "Submit Application"}
               </button>
             </div>
           </form>
