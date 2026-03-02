@@ -1,10 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 
 import styles from "./Home.module.css"; // import styles object
 
 import bulb from "./../../assets/images/bulb.png";
 
 function Home() {
+
+  const navigate = useNavigate();
+
+  const goToRegisterationPage = () => {
+    navigate("/join-us"); 
+  };
   return (
     <>
       <div className="w-[80%] mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center h-screen">
@@ -31,7 +39,7 @@ function Home() {
       </div>
       {/* Registration Button */}
       <div className="w-full flex justify-center items-center">
-        <button className="px-8 py-3 text-lg font-bold text-white uppercase transition-all duration-300 border-2 border-white rounded-full hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+        <button onClick={goToRegisterationPage} className="px-8 py-3 text-lg font-bold text-white uppercase transition-all duration-300 border-2 border-white rounded-full hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.8)]">
           Be a Team Member
         </button>
       </div>

@@ -9,6 +9,7 @@ import OurTeam from "./Pages/OurTeam/OurTeam";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import Footer from "./Components/Footer";
 import Details from "./Pages/Details/Details"; 
+import RegistrationDetails from "./Pages/RegistrationDetails/RegistrationDetails.jsx";
 
 
 function MainLayout() {
@@ -59,6 +60,14 @@ const router = createBrowserRouter([
     element: (
       <DetailsLayout>
         <Details />
+      </DetailsLayout>
+    ),
+  },
+  {
+    path: "/join-us", 
+    element: (
+      <DetailsLayout>
+        <RegistrationDetails />
       </DetailsLayout>
     ),
   },
