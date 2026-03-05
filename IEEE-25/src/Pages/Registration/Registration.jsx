@@ -261,16 +261,13 @@ const Registration = () => {
     setErrors({});
   };
 
-  const hasErrors =
-    Object.values(errors).some((err) => err) ||
-    Object.entries(formData).some(
-      ([key, val]) =>
-        key !== "linkedInUrl" &&
-        key !== "secondPreference" &&
-        key !== "cv" &&
-        !val,
-    );
-
+const hasErrors =
+  Object.values(errors).some((err) => err) ||
+  Object.entries(formData).some(([key, val]) => {
+    const optionalFields = ["linkedInUrl", "secondPreference", "cv"];
+    if (optionalFields.includes(key)) return false;
+    return !val;
+  });
   return (
     <div className="min-h-screen py-12 px-4 selection:bg-cyan-500/30 ">
       {/* Confirmation Modal */}
