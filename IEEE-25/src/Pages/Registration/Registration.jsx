@@ -42,8 +42,58 @@ const Registration = () => {
   const levels = ["Freshmen", "Sophomore", "Junior 1 or 2", "Senior"];
   const hourOptions = ["Less than 4", "4-6", "6-10", "More than 10"];
 
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+      case "name":
+        if (!value.trim()) {
+          error = "Name cannot be empty";
+        } 
+        break;
+
+      case "whatsappNumber":
+        if (!/^(01[0-9]{9}|\+20(10|11|12|15)[0-9]{8})$/.test(value)) {
+          error =
+            "Enter a valid Egyptian number (01xxxxxxxxx or +201xxxxxxxxx)";
+        }
+        break;
+
+      case "email":
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = "Invalid email format";
+        }
+        break;
+
+      case "linkedInUrl":
+        if (value && !/^(https?:\/\/)?(www\.)?linkedin\.com\/.+/.test(value)) {
+          error = "Must be a valid LinkedIn URL";
+        }
+        break;
+
+      case "nationalId":
+        if (!/^[0-9]{14}$/.test(value)) {
+          error = "National ID must be exactly 14 digits";
+        }
+        break;
+
+      case "facultyId":
+        if (!value.trim()) {
+          error = "Faculty ID is required";
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    return error;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    const error = validateField(name, value);
 
     setFormData((prev) => {
       const newData = { ...prev, [name]: value };
@@ -55,9 +105,10 @@ const Registration = () => {
       return newData;
     });
 
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
+    setErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
   };
 
   const handleCvChange = (e) => {
@@ -75,38 +126,16 @@ const Registration = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    const requiredFields = [
-      "name",
-      "email",
-      "whatsappNumber",
-      "nationalId",
-      "university",
-      "faculty",
-      "department",
-      "facultyId",
-      "level",
-      "firstPreference",
-      "interestReason",
-      "hoursPerWeek",
-      "willingToPayMembership",
-    ];
-
-    requiredFields.forEach((field) => {
-      if (!formData[field]) {
-        newErrors[field] = "Required";
-      }
+    Object.keys(formData).forEach((field) => {
+      const error = validateField(field, formData[field]);
+      if (error) newErrors[field] = error;
     });
-
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email";
-    }
 
     if (!formData.cv && !isEditMode) {
       newErrors.cv = "CV required";
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
@@ -232,6 +261,16 @@ const Registration = () => {
     setErrors({});
   };
 
+  const hasErrors =
+    Object.values(errors).some((err) => err) ||
+    Object.entries(formData).some(
+      ([key, val]) =>
+        key !== "linkedInUrl" &&
+        key !== "secondPreference" &&
+        key !== "cv" &&
+        !val,
+    );
+
   return (
     <div className="min-h-screen py-12 px-4 selection:bg-cyan-500/30 ">
       {/* Confirmation Modal */}
@@ -344,6 +383,11 @@ const Registration = () => {
                     }`}
                     placeholder={field.placeholder}
                   />
+                  {errors[field.id] && (
+                    <p className="mt-2 text-xs text-pink-500 font-bold">
+                      {errors[field.id]}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
@@ -561,7 +605,7 @@ const Registration = () => {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || hasErrors}
                 className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black text-xl uppercase tracking-[0.2em] py-5 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-all hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(34,211,238,0.6)] disabled:opacity-50 flex justify-center items-center"
               >
                 {isSubmitting ? (
