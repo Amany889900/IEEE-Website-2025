@@ -39,7 +39,7 @@ const Registration = () => {
     "HR",
     "FR",
   ];
-  const levels = ["Freshmen", "Sophomore", "Junior 1 or 2", "Senior"];
+  const levels = ["Freshmen", "Sophomore", "Junior", "Senior 1 or 2"];
   const hourOptions = ["Less than 4", "4-6", "6-10", "More than 10"];
 
   const validateField = (name, value) => {
