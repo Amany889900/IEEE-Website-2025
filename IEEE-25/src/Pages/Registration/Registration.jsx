@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Registration = () => {
   const initialFormState = {
@@ -19,6 +19,14 @@ const Registration = () => {
     willingToPayMembership: "",
     cv: null,
   };
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, []);
 
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});

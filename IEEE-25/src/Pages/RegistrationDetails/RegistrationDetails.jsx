@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Palette, Users, Globe, Settings, Code, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +46,13 @@ function RegistrationDetails() {
  
      navigate("/join-us/register"); 
   }
+   useEffect(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }, []);
 
   return (
     <div className="min-h-screen  text-white py-20 px-6">
