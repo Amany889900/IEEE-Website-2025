@@ -27,11 +27,12 @@ const Registration = () => {
       behavior: 'smooth'
     });
   }, []);
-
-  useEffect(() => {
+useEffect(() => {
   const savedId = localStorage.getItem("registrationId");
+
   if (savedId) {
     setRegistrationId(savedId);
+    fetchRegistrationData(savedId);
   }
 }, []);
 
@@ -153,58 +154,60 @@ const Registration = () => {
       if (error) newErrors[field] = error;
     });
 
-    if (!formData.cv && !isEditMode) {
-      newErrors.cv = "CV required";
-    }
+  if (!formData.cv) {
+  newErrors.cv = "CV required";
+}
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleEditClick = async () => {
-    if (!registrationId) return;
+  const fetchRegistrationData = async (id) => {
+  try {
+    setIsSubmitting(true);
 
-    try {
-      setIsSubmitting(true);
+    const response = await fetch(
+      `https://ieee-recruitment-backend-spring26.vercel.app/registration/${id}`
+    );
 
-      const response = await fetch(
-        `https://ieee-recruitment-backend-spring26.vercel.app/registration/${registrationId}`,
-      );
+    if (response.ok) {
+      const json = await response.json();
+      const d = json.data;
 
-      if (response.ok) {
-        const json = await response.json();
-        const d = json.data;
+      setFormData({
+        name: d.name || "",
+        email: d.email || "",
+        whatsappNumber: d.whatsappNumber || "",
+        nationalId: d.nationalId || "",
+        university: d.university || "",
+        faculty: d.faculty || "",
+        department: d.department || "",
+        facultyId: d.facultyId || "",
+        linkedInUrl: d.linkedInUrl || "",
+        level: d.level || "",
+        firstPreference: d.firstPreference || "",
+        secondPreference: d.secondPreference || "",
+        interestReason: d.interestReason || "",
+        hoursPerWeek: d.hoursPerWeek || "",
+        willingToPayMembership: d.willingToPayMembership || "",
+        cv: null,
+      });
 
-        setFormData({
-          name: d.name || "",
-          email: d.email || "",
-          whatsappNumber: d.whatsappNumber || "",
-          nationalId: d.nationalId || "",
-          university: d.university || "",
-          faculty: d.faculty || "",
-          department: d.department || "",
-          facultyId: d.facultyId || "",
-          linkedInUrl: d.linkedInUrl || "",
-          level: d.level || "",
-          firstPreference: d.firstPreference || "",
-          secondPreference: d.secondPreference || "",
-          interestReason: d.interestReason || "",
-          hoursPerWeek: d.hoursPerWeek || "",
-          willingToPayMembership: d.willingToPayMembership || "",
-          cv: null,
-        });
-
-        setIsEditMode(true);
-        setSubmitStatus(null);
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
-    } finally {
-      setIsSubmitting(false);
+      setIsEditMode(true);
+      setSubmitStatus(null);
     }
-  };
+  } catch (err) {
+    console.error("Error fetching data:", err);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+ const handleEditClick = async () => {
+  if (!registrationId) return;
+  fetchRegistrationData(registrationId);
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 
   const handleFormSubmitAttempt = (e) => {
     e.preventDefault();
@@ -255,8 +258,8 @@ const Registration = () => {
         const result = await response.json();
 
       if (!isEditMode && result.data?._id) {
-  setRegistrationId(result.data._id);
-  localStorage.setItem("registrationId", result.data._id);
+         setRegistrationId(result.data._id);
+        localStorage.setItem("registrationId", result.data._id);
 }
 
         setSubmitStatus("success");
@@ -579,7 +582,7 @@ const Registration = () => {
             {/* CV Upload */}
             <div className="py-4">
               <label className="block text-xs uppercase tracking-widest font-bold text-cyan-400 mb-4">
-                {isEditMode ? "Update CV (Optional)" : "Upload CV (PDF) *"}
+               Upload CV (PDF) *
               </label>
               <div className="relative p-6 border-2 border-dashed border-white/10 rounded-2xl bg-[#051124]">
                 <input
