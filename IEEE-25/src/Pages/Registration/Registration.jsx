@@ -28,6 +28,13 @@ const Registration = () => {
     });
   }, []);
 
+  useEffect(() => {
+  const savedId = localStorage.getItem("registrationId");
+  if (savedId) {
+    setRegistrationId(savedId);
+  }
+}, []);
+
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -247,9 +254,10 @@ const Registration = () => {
       if (response.ok) {
         const result = await response.json();
 
-        if (!isEditMode && result.data?._id) {
-          setRegistrationId(result.data._id);
-        }
+      if (!isEditMode && result.data?._id) {
+  setRegistrationId(result.data._id);
+  localStorage.setItem("registrationId", result.data._id);
+}
 
         setSubmitStatus("success");
 
