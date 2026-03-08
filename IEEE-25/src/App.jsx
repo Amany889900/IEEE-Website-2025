@@ -1,5 +1,5 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, createHashRouter, RouterProvider } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
@@ -51,7 +51,7 @@ function DetailsLayout({ children }) {
   );
 }
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <MainLayout />, 
