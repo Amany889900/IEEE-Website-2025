@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Palette, Users, Globe, Settings, Code, ArrowRight } from 'lucide-react';
+import { Palette, Users, Globe, HandCoins, Code, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const teams = [
@@ -17,19 +17,18 @@ const teams = [
     description: "Building positive environments through recruitment, onboarding, and team-building activities.",
     tags: ["Recruitment", "Engagement", "Training"]
   },
-  {
-    title: "Public Relations (PR)",
+ {
+    title: "PR & Logistics",
     icon: <Globe className="text-purple-500" size={32} />,
     color: "hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]",
-    description: "The professional face of IEEE ASUSB. Managing external partners and official communications.",
-    tags: ["Networking", "Outreach", "Communication"]
-  },
-  {
-    title: "Logistics",
-    icon: <Settings className="text-orange-500" size={32} />,
-    color: "hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]",
-    description: "The backbone of our events. Coordinating venues, materials, and seamless execution.",
-    tags: ["Planning", "Coordination", "Execution"]
+    description: "The face and backbone of IEEE ASUSB. Managing external partners and official communications while ensuring seamless event execution.",
+    tags: ["Networking", "Outreach", "Coordination", "Execution"]
+  },{
+    title: "Fundraising (FR)",
+    icon: <HandCoins className="text-emerald-500" size={32} />,
+    color: "hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]",
+    description: "Fueling our mission by securing sponsorships and building professional partnerships with companies and startups.",
+    tags: ["Sponsorship", "Negotiation", "Partnerships", "Strategic Planning"]
   },
   {
     title: "IT Technical Team",
