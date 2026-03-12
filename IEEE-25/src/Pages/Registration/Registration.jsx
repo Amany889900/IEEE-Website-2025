@@ -270,6 +270,7 @@ useEffect(() => {
         }
       } else {
         const errorData = await response.json();
+        console.log(errorData);
         setBackendError(errorData.message || "Something went wrong");
         setSubmitStatus("error");
       }
