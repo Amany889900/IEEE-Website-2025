@@ -50,7 +50,7 @@ useEffect(() => {
   const committees = [
     "Media and Marketing",
     "IT",
-    "PR & Logistics",
+    "PR and Logistics",
     "HR",
     "FR",
   ];
